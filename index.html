@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,8 +14,10 @@
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:100,200,300,400,500,600,700,800,900"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"
+          rel="stylesheet">
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="vendor/devicons/css/devicons.min.css" rel="stylesheet">
     <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
@@ -23,410 +25,536 @@
     <!-- Custom styles for this template -->
     <link href="css/resume.min.css" rel="stylesheet">
     <style>
-      .custom-btn {
-        background-color: #787A3B !important;
-        border-color: #787A3B !important;
-        color: #fff !important;
-      }
+        .custom-btn {
+            background-color: #787A3B !important;
+            border-color: #787A3B !important;
+            color: #fff !important;
+        }
 
-      .custom-btn:hover {
-        background-color: #5e6130 !important;
-        border-color: #5e6130 !important;
-      }
-      .profile-intro {
-        max-width: 800px;
-      }
-      .card-body img { max-height: 400px; width: auto; border: 8px solid #5e6130 !important;}
+        .custom-btn:hover {
+            background-color: #5e6130 !important;
+            border-color: #5e6130 !important;
+        }
+
+        .profile-intro {
+            max-width: 800px;
+        }
+
+        .card-body img {
+            max-height: 400px;
+            width: auto;
+            border: 8px solid #5e6130 !important;
+        }
     </style>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E203GS8JF4"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
 
-      gtag('config', 'G-E203GS8JF4');
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-E203GS8JF4');
     </script>
-  </head>
+</head>
 
-  <body id="page-top">
+<body id="page-top">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top">
         <span class="d-block d-lg-none">Senior Software Developer</span>
-<!--        <span class="d-none d-lg-block">-->
-<!--          <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="img/profile.jpg" alt="">-->
-<!--        </span>-->
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <!--        <span class="d-none d-lg-block">-->
+        <!--          <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="img/profile.jpg" alt="">-->
+        <!--        </span>-->
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#experience">Experience</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#projects">Projects</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#education">Education</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#skills">Skills</a>
-          </li>
-<!--          <li class="nav-item">-->
-<!--            <a class="nav-link js-scroll-trigger" href="#interests">Interests</a>-->
-<!--          </li>-->
-<!--          <li class="nav-item">-->
-<!--            <a class="nav-link js-scroll-trigger" href="#awards">Awards</a>-->
-<!--          </li>-->
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#home">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#experience">Experience</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#projects">Projects</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#education">Education</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#skills">Skills</a>
+            </li>
+            <!--          <li class="nav-item">-->
+            <!--            <a class="nav-link js-scroll-trigger" href="#interests">Interests</a>-->
+            <!--          </li>-->
+            <!--          <li class="nav-item">-->
+            <!--            <a class="nav-link js-scroll-trigger" href="#awards">Awards</a>-->
+            <!--          </li>-->
         </ul>
-      </div>
-    </nav>
+    </div>
+</nav>
 
-    <div class="container-fluid p-0">
+<div class="container-fluid p-0">
 
-      <section class="resume-section pt-3 p-lg-5 d-flex d-column" id="home">
+    <section class="resume-section pt-3 p-lg-5 d-flex d-column" id="home">
         <div class="my-auto">
-          <h1 class="mb-0">Abhishek
-            <span class="text-primary">Gulyani</span>
-          </h1>
-          <div class="subheading mb-2">Greater Toronto Area, Canada · 🇨🇦
-<!--            <a href="mailto:name@email.com">name@email.com</a>-->
-          </div>
-          <ul class="list-inline list-social-icons mb-2">
-            <li class="list-inline-item">
-              <a href="https://stackoverflow.com/users/346293/stirredo">
+            <h1 class="mb-0">Abhishek
+                <span class="text-primary">Gulyani</span>
+            </h1>
+            <div class="subheading mb-2">Greater Toronto Area, Canada · 🇨🇦
+                <!--            <a href="mailto:name@email.com">name@email.com</a>-->
+            </div>
+            <ul class="list-inline list-social-icons mb-2">
+                <li class="list-inline-item">
+                    <a href="https://stackoverflow.com/users/346293/stirredo">
                 <span class="fa-stack fa-lg">
                   <i class="fa fa-circle fa-stack-2x"></i>
                   <i class="fa fa-stack-overflow fa-stack-1x fa-inverse"></i>
                 </span>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://github.com/stirredo">
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="https://github.com/stirredo">
                 <span class="fa-stack fa-lg">
                   <i class="fa fa-circle fa-stack-2x"></i>
                   <i class="fa fa-github fa-stack-1x fa-inverse"></i>
                 </span>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://www.linkedin.com/in/abhishek-g-developer">
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="https://www.linkedin.com/in/abhishek-g-developer">
                 <span class="fa-stack fa-lg">
                   <i class="fa fa-circle fa-stack-2x"></i>
                   <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
                 </span>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="https://twitter.com/stirredo">
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="https://twitter.com/stirredo">
                 <span class="fa-stack fa-lg">
                   <i class="fa fa-circle fa-stack-2x"></i>
                   <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                 </span>
-              </a>
-            </li>
-          </ul>
+                    </a>
+                </li>
+            </ul>
 
-<!--          <div class="card">-->
-<!--            <div class="card-body">-->
-<!--              <h3 class="card-title">Hi there, I'm Abhishek! 👋</h3>-->
-<!--              <p class="card-text">I'm a passionate programmer with a love for learning and exploring new technologies. My journey began at the age of 16 when I started editing WordPress plugins in PHP and JavaScript scripts as a freelancer. Since then, I've been obsessed with understanding the inner workings of languages and frameworks, constantly comparing them and devouring programming books.</p>-->
-<!--              <button class="btn custom-btn" id="knowMoreBtn">Know More</button>-->
-<!--            </div>-->
-<!--          </div>-->
-          <div class="card profile-intro"> <div class="card-body"> <div class="row"> <div class="col-md-4"> <img src="img/profile_picture.jpeg" alt="Profile Picture" class="img-fluid mb-2"> </div> <div class="col-md-8"> <h3 class="card-title">Hi there, I'm Abhishek! 👋</h3> <p class="card-text">I'm a passionate programmer with a love for learning and exploring new technologies. My journey began at the age of 16 when I started editing WordPress plugins in PHP and JavaScript scripts as a freelancer. Since then, I've been obsessed with understanding the inner workings of languages and frameworks, constantly comparing them and devouring programming books.</p> <button class="btn custom-btn" id="knowMoreBtn">Know More</button> </div> </div> </div> </div>
-
-
-
+            <!--          <div class="card">-->
+            <!--            <div class="card-body">-->
+            <!--              <h3 class="card-title">Hi there, I'm Abhishek! 👋</h3>-->
+            <!--              <p class="card-text">I'm a passionate programmer with a love for learning and exploring new technologies. My journey began at the age of 16 when I started editing WordPress plugins in PHP and JavaScript scripts as a freelancer. Since then, I've been obsessed with understanding the inner workings of languages and frameworks, constantly comparing them and devouring programming books.</p>-->
+            <!--              <button class="btn custom-btn" id="knowMoreBtn">Know More</button>-->
+            <!--            </div>-->
+            <!--          </div>-->
+            <div class="card profile-intro">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4"><img src="img/profile_picture.jpeg" alt="Profile Picture"
+                                                   class="img-fluid mb-2"></div>
+                        <div class="col-md-8"><h3 class="card-title">Hi there, I'm Abhishek! 👋</h3>
+                            <p class="card-text">I'm a passionate programmer with a love for learning and exploring new
+                                technologies. My journey began at the age of 16 when I started editing WordPress plugins
+                                in PHP and JavaScript scripts as a freelancer. Since then, I've been obsessed with
+                                understanding the inner workings of languages and frameworks, constantly comparing them
+                                and devouring programming books.</p>
+                            <button class="btn custom-btn" id="knowMoreBtn">Know More</button>
+                            <button class="btn custom-btn" id="seeProjectsBtn">See Projects</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
         </div>
-      </section>
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="about">
-        <div class="my-auto"> <h2 class="mb-5">About</h2>
+    </section>
+    <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="about">
+        <div class="my-auto"><h2 class="mb-5">About</h2>
 
-          <div class="card mb-3">
-            <div class="card-body">
-              <h3 class="card-title text-uppercase">Here is my short (Okay, maybe not that short) bio:</h3>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="card-title text-uppercase">Here is my short (Okay, maybe not that short) bio:</h3>
 
-              <h5 class="text-dark">👦 Early Days:</h5>
-              <p class="card-text">My journey as a programmer began at the age of 16 when I started editing WordPress plugins in PHP and JavaScript scripts as a freelancer. From the very beginning, I was obsessed with learning new languages and frameworks, constantly comparing them to understand their inner workings. I would devour programming books from cover to cover, even during college classes that weren't directly related to programming.</p>
+                    <h5 class="text-dark">👦 Early Days:</h5>
+                    <p class="card-text">My journey as a programmer began at the age of 16 when I started editing
+                        WordPress plugins in PHP and JavaScript scripts as a freelancer. From the very beginning, I was
+                        obsessed with learning new languages and frameworks, constantly comparing them to understand
+                        their inner workings. I would devour programming books from cover to cover, even during college
+                        classes that weren't directly related to programming.</p>
 
-              <h5 class="text-dark">🧱 SOLID Principles and Design Patterns:</h5>
-              <p class="card-text">As I progressed through various programming jobs and projects, I realized the importance of making software more maintainable through SOLID principles and design patterns. This realization led me to read
-                <a href="https://www.oreilly.com/library/view/head-first-design/0596007124/">"Head First Design Patterns."</a> Initially, I tried to force design patterns into every aspect of my code, overengineering solutions. However, I soon learned that it's better to start with a simpler approach and refactor later to incorporate design patterns when necessary.</p>
+                    <h5 class="text-dark">🧱 SOLID Principles and Design Patterns:</h5>
+                    <p class="card-text">As I progressed through various programming jobs and projects, I realized the
+                        importance of making software more maintainable through SOLID principles and design patterns.
+                        This realization led me to read
+                        <a href="https://www.oreilly.com/library/view/head-first-design/0596007124/">"Head First Design
+                            Patterns."</a> Initially, I tried to force design patterns into every aspect of my code,
+                        overengineering solutions. However, I soon learned that it's better to start with a simpler
+                        approach and refactor later to incorporate design patterns when necessary.</p>
 
-              <h5 class="text-dark">🧪 Test-Driven Development: </h5>
-              <p class="card-text">Building my project, <a href="https://exelocker.xyz">EXELocker</a>, taught me the value of test-driven development. EXELocker is a free, open-source application that allows users to password-protect executable files using strong AES-256 encryption. It offers features like locking any executable program, creating backups, and providing a user-friendly interface. Developing EXELocker made me realize how difficult it is to make changes to software without using tests. I learned about various types of tests, such as unit tests, feature tests, and end-to-end tests. By writing tests beforehand, I could ensure that the code continued to work even after making changes, making it easier to introduce new features while maintaining the integrity of the existing codebase. Initially, I wrote fragile tests that broke with the slightest changes, but after reading <a href="https://www.amazon.com/Art-Unit-Testing-Third-JavaScript/dp/1617297488/ref=sr_1_4?crid=1C83VWYCOF2AC&dib=eyJ2IjoiMSJ9.ZkRhsQx8d4Y8IpJRMRJtYLG_22nenQnK5B8ekWMLn_O5obWJBi7Mx6jKRkYZqAyZyYDr1fegENq3iCyEzqt3xV9F1Uz6FFf_sIOslMGz2wf_FBeSys13V6VunTU0bRXmAuZsD-IUghDIVQAzLKLuR8o8avNR1CVivxKi9JfzAnqkXric0QDFtdkLBhBkhLPQBZCgw4CdMjS3zzlza2YMXw_VJhBGwtyUs2EfurtUq24.OfuUaFOF1WQeOvAtM3WZe0MATu5KmVfkkiwwK-8hD8Q&dib_tag=se&keywords=art+of+unit+testing&qid=1717929621&sprefix=art+of+unit+test%2Caps%2C357&sr=8-4">"The Art of Unit Testing" by Roy Osherove</a>, I learned how to write more resilient tests. Today, the use of LLMs has further simplified the task of writing tests for me.</p>
+                    <h5 class="text-dark">🧪 Test-Driven Development: </h5>
+                    <p class="card-text">Building my project, <a href="https://exelocker.xyz">EXELocker</a>, taught me
+                        the value of test-driven development. EXELocker is a free, open-source application that allows
+                        users to password-protect executable files using strong AES-256 encryption. It offers features
+                        like locking any executable program, creating backups, and providing a user-friendly interface.
+                        Developing EXELocker made me realize how difficult it is to make changes to software without
+                        using tests. I learned about various types of tests, such as unit tests, feature tests, and
+                        end-to-end tests. By writing tests beforehand, I could ensure that the code continued to work
+                        even after making changes, making it easier to introduce new features while maintaining the
+                        integrity of the existing codebase. Initially, I wrote fragile tests that broke with the
+                        slightest changes, but after reading <a
+                                href="https://www.amazon.com/Art-Unit-Testing-Third-JavaScript/dp/1617297488/ref=sr_1_4?crid=1C83VWYCOF2AC&dib=eyJ2IjoiMSJ9.ZkRhsQx8d4Y8IpJRMRJtYLG_22nenQnK5B8ekWMLn_O5obWJBi7Mx6jKRkYZqAyZyYDr1fegENq3iCyEzqt3xV9F1Uz6FFf_sIOslMGz2wf_FBeSys13V6VunTU0bRXmAuZsD-IUghDIVQAzLKLuR8o8avNR1CVivxKi9JfzAnqkXric0QDFtdkLBhBkhLPQBZCgw4CdMjS3zzlza2YMXw_VJhBGwtyUs2EfurtUq24.OfuUaFOF1WQeOvAtM3WZe0MATu5KmVfkkiwwK-8hD8Q&dib_tag=se&keywords=art+of+unit+testing&qid=1717929621&sprefix=art+of+unit+test%2Caps%2C357&sr=8-4">"The
+                            Art of Unit Testing" by Roy Osherove</a>, I learned how to write more resilient tests.
+                        Today, the use of LLMs has further simplified the task of writing tests for me.</p>
 
-              <h5 class="text-dark">📈 Scalability:</h5>
-              <p class="card-text">I also learned the importance of scalability when I created another project called Deep Work Timer. This app helps users overcome procrastination and improve focus by utilizing the Pomodoro Technique and providing detailed reports and data on user activity. However, when I started using analytics, the website's performance suffered significantly. This challenge led me to explore ways to accelerate my website and serve analytics in real-time. Reading <a href="https://www.amazon.com/Designing-Data-Intensive-Applications-Reliable-Maintainable/dp/1449373321/ref=sr_1_1?crid=1HCNXRZPFF6MR&dib=eyJ2IjoiMSJ9.ha8jXGdEFRp7DY3kFd5Y_cXoDVpMHcpsV0G7xHbVnrvqDrWUEcxzHgPmStJGPdfKY6FVbaf1zPiOx3kd4JZ6ws-qzjxwJI78-3c5qmj2RPELo4mgkHs0pa9_-gwnRsn6LuUyo7E49mgtT5xD8kgpzKonHL-TMRzZs3-6Uo0diBFc6BxSJn-hPbJlvtmIxMx9mCuWKxN1yW0tWuuaVcIL8LUXcG4bXKCGKiXPal1xAlU.PgTMdczOd94fFj3KSdnsG9z87GOmWu9Hu3bJCcN76RY&dib_tag=se&keywords=designing+data+intensive+applications&qid=1717929754&sprefix=designing+data+intensive+applicati%2Caps%2C305&sr=8-1">"Designing Data-Intensive Applications"</a> introduced me to various approaches for serving real-time analytics using different types of databases. I learned about Apache Spark for batch processing, Apache Kafka with Flink for aggregating real-time data, and using Elasticsearch and the ELK stack for serving real-time analytics after loading data with Logstash. I finally got the opportunity to apply these technologies in my work at <a href="https://codematics.com">Codematics</a>, a marketing technology that helps businesses identify and convert anonymous website visitors into leads.</p>
+                    <h5 class="text-dark">📈 Scalability:</h5>
+                    <p class="card-text">I also learned the importance of scalability when I created another project
+                        called Deep Work Timer. This app helps users overcome procrastination and improve focus by
+                        utilizing the Pomodoro Technique and providing detailed reports and data on user activity.
+                        However, when I started using analytics, the website's performance suffered significantly. This
+                        challenge led me to explore ways to accelerate my website and serve analytics in real-time.
+                        Reading <a
+                                href="https://www.amazon.com/Designing-Data-Intensive-Applications-Reliable-Maintainable/dp/1449373321/ref=sr_1_1?crid=1HCNXRZPFF6MR&dib=eyJ2IjoiMSJ9.ha8jXGdEFRp7DY3kFd5Y_cXoDVpMHcpsV0G7xHbVnrvqDrWUEcxzHgPmStJGPdfKY6FVbaf1zPiOx3kd4JZ6ws-qzjxwJI78-3c5qmj2RPELo4mgkHs0pa9_-gwnRsn6LuUyo7E49mgtT5xD8kgpzKonHL-TMRzZs3-6Uo0diBFc6BxSJn-hPbJlvtmIxMx9mCuWKxN1yW0tWuuaVcIL8LUXcG4bXKCGKiXPal1xAlU.PgTMdczOd94fFj3KSdnsG9z87GOmWu9Hu3bJCcN76RY&dib_tag=se&keywords=designing+data+intensive+applications&qid=1717929754&sprefix=designing+data+intensive+applicati%2Caps%2C305&sr=8-1">"Designing
+                            Data-Intensive Applications"</a> introduced me to various approaches for serving real-time
+                        analytics using different types of databases. I learned about Apache Spark for batch processing,
+                        Apache Kafka with Flink for aggregating real-time data, and using Elasticsearch and the ELK
+                        stack for serving real-time analytics after loading data with Logstash. I finally got the
+                        opportunity to apply these technologies in my work at <a href="https://codematics.com">Codematics</a>,
+                        a marketing technology that helps businesses identify and convert anonymous website visitors
+                        into leads.</p>
 
-              <h5 class="text-dark">🤖 Machine Learning and Deep Learning:</h5>
-              <p class="card-text">Delving into analytics also sparked my interest in statistics, leading me to take statistics courses on Udemy, which introduced me to the world of machine learning. I was particularly fascinated by deep learning, as it seemed like magic to me – training an artificial brain. I have completed many deep learning courses by <a href="https://www.udemy.com/user/joseportilla/">Jose Portilla</a> on Udemy and even incorporated time series data to predict when a user will achieve 10,000 hours in a skill within my Deep Work Timer project. This knowledge also helped me develop vocabulary for my analytics in <a href="https://deepworktimer.com">deepworktimer.com</a>.</p>
+                    <h5 class="text-dark">🤖 Machine Learning and Deep Learning:</h5>
+                    <p class="card-text">Delving into analytics also sparked my interest in statistics, leading me to
+                        take statistics courses on Udemy, which introduced me to the world of machine learning. I was
+                        particularly fascinated by deep learning, as it seemed like magic to me – training an artificial
+                        brain. I have completed many deep learning courses by <a
+                                href="https://www.udemy.com/user/joseportilla/">Jose Portilla</a> on Udemy and even
+                        incorporated time series data to predict when a user will achieve 10,000 hours in a skill within
+                        my Deep Work Timer project. This knowledge also helped me develop vocabulary for my analytics in
+                        <a href="https://deepworktimer.com">deepworktimer.com</a>.</p>
 
-              <h5 class="text-dark">🎯 Recommendation Engines and other interests:</h5>
-              <p class="card-text">Curiosity drove me to read books on how recommendation engines are built, such as how Spotify uses graph-based ANN for music recommendations, how Facebook uses graph-based ANN for friend suggestions, and how LinkedIn employs similar techniques. I have also explored reinforcement learning through books and am currently seeking opportunities to apply this knowledge in my work. One challenge I've encountered with deep learning is the difficulty in acquiring and storing data, which has sometimes hindered my ability to apply my machine learning knowledge effectively.</p>
+                    <h5 class="text-dark">🎯 Recommendation Engines and other interests:</h5>
+                    <p class="card-text">Curiosity drove me to read books on how recommendation engines are built, such
+                        as how Spotify uses graph-based ANN for music recommendations, how Facebook uses graph-based ANN
+                        for friend suggestions, and how LinkedIn employs similar techniques. I have also explored
+                        reinforcement learning through books and am currently seeking opportunities to apply this
+                        knowledge in my work. One challenge I've encountered with deep learning is the difficulty in
+                        acquiring and storing data, which has sometimes hindered my ability to apply my machine learning
+                        knowledge effectively.</p>
 
-              <h5 class="text-dark">📚 Continuous Learning:</h5>
-              <p class="card-text">I dedicate my weekends to learning new skills and satisfying my curiosity by watching courses on Udemy and reading books on subjects that pique my interest. This continuous learning journey has been an integral part of my growth as a programmer, and I look forward to the many exciting challenges and opportunities that lie ahead.</p>
+                    <h5 class="text-dark">📚 Continuous Learning:</h5>
+                    <p class="card-text">I dedicate my weekends to learning new skills and satisfying my curiosity by
+                        watching courses on Udemy and reading books on subjects that pique my interest. This continuous
+                        learning journey has been an integral part of my growth as a programmer, and I look forward to
+                        the many exciting challenges and opportunities that lie ahead.</p>
+                </div>
             </div>
-          </div>
 
-      </div> </section>
-
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="experience"> <div class="my-auto"> <h2 class="mb-5">Experience</h2>
-
-        <div class="card mb-5">
-          <div class="card-body">
-            <div class="resume-item d-flex flex-column flex-md-row">
-              <div class="resume-content mr-auto">
-                <h3 class="mb-0">Software Engineer</h3>
-                <div class="subheading mb-3">Blue Leaf Corp. Pvt Ltd.</div>
-                <p>Blue Leaf Corporate Solutions P Ltd is a Global Mobility & Relocations Consulting company based out of New Delhi with offices in Gurgaon, Noida, Hyderabad, Bangalore & Kolkata.</p>
-              </div>
-              <div class="resume-date text-md-right">
-                <span class="text-primary">March 2017 - April 2024</span>
-              </div>
-            </div>
-          </div>
         </div>
+    </section>
 
-        <div class="card mb-5">
-          <div class="card-body">
-            <div class="resume-item d-flex flex-column flex-md-row">
-              <div class="resume-content mr-auto">
-                <h3 class="mb-0">Founding Developer</h3>
-                <div class="subheading mb-3">Codematics Solution LLP.</div>
-                <p>Codematics provides a marketing technology platform that helps businesses identify and convert anonymous website visitors into leads.</p>
-              </div>
-              <div class="resume-date text-md-right">
-                <span class="text-primary">Apr 2019 - Present</span>
-              </div>
+    <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="experience">
+        <div class="my-auto"><h2 class="mb-5">Experience</h2>
+
+            <div class="card mb-5">
+                <div class="card-body">
+                    <div class="resume-item d-flex flex-column flex-md-row">
+                        <div class="resume-content mr-auto">
+                            <h3 class="mb-0">Software Engineer</h3>
+                            <div class="subheading mb-3">Blue Leaf Corp. Pvt Ltd.</div>
+                            <p>Blue Leaf Corporate Solutions P Ltd is a Global Mobility & Relocations Consulting company
+                                based out of New Delhi with offices in Gurgaon, Noida, Hyderabad, Bangalore &
+                                Kolkata.</p>
+                        </div>
+                        <div class="resume-date text-md-right">
+                            <span class="text-primary">March 2017 - April 2024</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <div class="card">
-          <div class="card-body">
-            <div class="resume-item d-flex flex-column flex-md-row">
-              <div class="resume-content mr-auto">
-                <h3 class="mb-0">Associate Consultant</h3>
-                <div class="subheading mb-3">Expicient Inc</div>
-                <p>Expicient Inc. was an omni-channel commerce focused software and services firm. We have served top retail, logistics and distribution clients in USA, Canada, UK, South America, the Middle East, Australia, Malaysia and India.</p>
-              </div>
-              <div class="resume-date text-md-right">
-                <span class="text-primary">February 2016 - February 2017</span>
-              </div>
+            <div class="card mb-5">
+                <div class="card-body">
+                    <div class="resume-item d-flex flex-column flex-md-row">
+                        <div class="resume-content mr-auto">
+                            <h3 class="mb-0">Founding Developer</h3>
+                            <div class="subheading mb-3">Codematics Solution LLP.</div>
+                            <p>Codematics provides a marketing technology platform that helps businesses identify and
+                                convert anonymous website visitors into leads.</p>
+                        </div>
+                        <div class="resume-date text-md-right">
+                            <span class="text-primary">Apr 2019 - Present</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
 
-      </div> </section>
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="projects">
+            <div class="card">
+                <div class="card-body">
+                    <div class="resume-item d-flex flex-column flex-md-row">
+                        <div class="resume-content mr-auto">
+                            <h3 class="mb-0">Associate Consultant</h3>
+                            <div class="subheading mb-3">Expicient Inc</div>
+                            <p>Expicient Inc. was an omni-channel commerce focused software and services firm. We have
+                                served top retail, logistics and distribution clients in USA, Canada, UK, South America,
+                                the Middle East, Australia, Malaysia and India.</p>
+                        </div>
+                        <div class="resume-date text-md-right">
+                            <span class="text-primary">February 2016 - February 2017</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="projects">
         <div class="my-auto">
-          <h2 class="mb-5">Projects</h2>
+            <h2 class="mb-5">Projects</h2>
 
-          <div class="card mb-5">
-            <div class="card-body">
-              <div class="resume-item d-flex flex-column flex-md-row">
-                <div class="resume-content mr-auto">
-                  <h3 class="mb-0">Codematics.com</h3>
-                  <p>Codematics is a marketing technology that helps businesses identify and convert anonymous website visitors into leads.</p>
-                  <ul>
-                    <li>It uses Identity Resolution technology to uncover visitors' details, including name, email, phone number, and over 600 parameters</li>
-                    <li>The platform segments leads by behavior, allowing targeted multi-channel ad campaigns and personalized outreach</li>
-                    <li>Codematics aims to deliver 30-60x more leads and conversions than competitors, with a simple setup process</li>
-                  </ul>
-                  <a href="https://codematics.com" target="_blank">Visit Codematics.com</a>
+            <div class="card mb-5">
+                <div class="card-body">
+                    <div class="resume-item d-flex flex-column flex-md-row">
+                        <div class="resume-content mr-auto">
+                            <h3 class="mb-0">Codematics.com</h3>
+                            <p>Codematics is a marketing technology that helps businesses identify and convert anonymous
+                                website visitors into leads.</p>
+                            <ul>
+                                <li>It uses Identity Resolution technology to uncover visitors' details, including name,
+                                    email, phone number, and over 600 parameters
+                                </li>
+                                <li>The platform segments leads by behavior, allowing targeted multi-channel ad
+                                    campaigns and personalized outreach
+                                </li>
+                                <li>Codematics aims to deliver 30-60x more leads and conversions than competitors, with
+                                    a simple setup process
+                                </li>
+                            </ul>
+                            <a href="https://codematics.com" target="_blank">Visit Codematics.com</a>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
 
-          <div class="card mb-5">
-            <div class="card-body">
-              <div class="resume-item d-flex flex-column flex-md-row">
-                <div class="resume-content mr-auto">
-                  <h3 class="mb-0">DeepWorkTimer.com</h3>
-                  <p>Deep Work Timer is an app designed to help people overcome procrastination and improve focus and concentration.</p>
-                  <ul>
-                    <li>It is built around the productivity principles of Flow and Deep Work, as described in the books by Mihaly Csikszentmihalyi and Cal Newport, respectively</li>
-                    <li>Users can write down tasks and goals as small, actionable steps and assign estimated time and skills to each task</li>
-                    <li>The app utilizes the Pomodoro Technique, where users select a task and start working in focused intervals</li>
-                    <li>Deep Work Timer provides detailed reports and data based on user activity, allowing them to track their skill level growth through charts</li>
-                  </ul>
-                  <a href="https://deepworktimer.com" target="_blank">Visit DeepWorkTimer.com</a>
+            <div class="card mb-5">
+                <div class="card-body">
+                    <div class="resume-item d-flex flex-column flex-md-row">
+                        <div class="resume-content mr-auto">
+                            <h3 class="mb-0">DeepWorkTimer.com</h3>
+                            <p>Deep Work Timer is an app designed to help people overcome procrastination and improve
+                                focus and concentration.</p>
+                            <ul>
+                                <li>It is built around the productivity principles of Flow and Deep Work, as described
+                                    in the books by Mihaly Csikszentmihalyi and Cal Newport, respectively
+                                </li>
+                                <li>Users can write down tasks and goals as small, actionable steps and assign estimated
+                                    time and skills to each task
+                                </li>
+                                <li>The app utilizes the Pomodoro Technique, where users select a task and start working
+                                    in focused intervals
+                                </li>
+                                <li>Deep Work Timer provides detailed reports and data based on user activity, allowing
+                                    them to track their skill level growth through charts
+                                </li>
+                            </ul>
+                            <a href="https://deepworktimer.com" target="_blank">Visit DeepWorkTimer.com</a>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
 
-          <div class="card">
-            <div class="card-body">
-              <div class="resume-item d-flex flex-column flex-md-row">
-                <div class="resume-content mr-auto">
-                  <h3 class="mb-0">EXELocker.xyz</h3>
-                  <p>EXELocker is a free and open-source application that allows users to password-protect any executable (.exe) file using strong AES-256 encryption. This ensures that the locked files cannot be opened without the correct password, providing an extra layer of security.</p>
-                  <ul>
-                    <li>Lock any executable program: Users can select any .exe file they want to lock and protect with a password.</li>
-                    <li>Strong encryption: The application uses state-of-the-art AES-256 encryption to secure the locked files, making it virtually impossible for anyone to access them without the password.</li>
-                    <li>Backup option: EXELocker offers a "Create Backup" option, which creates a copy of the original .exe file with a .old extension. This allows users to test the software and restore the original file if needed by simply renaming the .exe.old file to .exe.</li>
-                    <li>User-friendly interface: The application has a simple and intuitive interface for both locking and unlocking files, making it easy for users to secure their executables.</li>
-                    <li>Free and open-source: EXELocker is completely free to use without any hidden costs or adware. Additionally, the entire source code is available on GitHub, ensuring transparency and allowing users to verify the software's integrity.</li>
-                  </ul>
-                  <a href="https://exelocker.xyz" target="_blank">Visit EXELocker.xyz</a>
+            <div class="card">
+                <div class="card-body">
+                    <div class="resume-item d-flex flex-column flex-md-row">
+                        <div class="resume-content mr-auto">
+                            <h3 class="mb-0">EXELocker.xyz</h3>
+                            <p>EXELocker is a free and open-source application that allows users to password-protect any
+                                executable (.exe) file using strong AES-256 encryption. This ensures that the locked
+                                files cannot be opened without the correct password, providing an extra layer of
+                                security.</p>
+                            <ul>
+                                <li>Lock any executable program: Users can select any .exe file they want to lock and
+                                    protect with a password.
+                                </li>
+                                <li>Strong encryption: The application uses state-of-the-art AES-256 encryption to
+                                    secure the locked files, making it virtually impossible for anyone to access them
+                                    without the password.
+                                </li>
+                                <li>Backup option: EXELocker offers a "Create Backup" option, which creates a copy of
+                                    the original .exe file with a .old extension. This allows users to test the software
+                                    and restore the original file if needed by simply renaming the .exe.old file to
+                                    .exe.
+                                </li>
+                                <li>User-friendly interface: The application has a simple and intuitive interface for
+                                    both locking and unlocking files, making it easy for users to secure their
+                                    executables.
+                                </li>
+                                <li>Free and open-source: EXELocker is completely free to use without any hidden costs
+                                    or adware. Additionally, the entire source code is available on GitHub, ensuring
+                                    transparency and allowing users to verify the software's integrity.
+                                </li>
+                            </ul>
+                            <a href="https://exelocker.xyz" target="_blank">Visit EXELocker.xyz</a>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
 
         </div>
-      </section>
+    </section>
 
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="education"> <div class="my-auto"> <h2 class="mb-5">Education</h2>
+    <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="education">
+        <div class="my-auto"><h2 class="mb-5">Education</h2>
 
-        <div class="card mb-5">
-          <div class="card-body">
-            <div class="resume-item d-flex flex-column flex-md-row">
-              <div class="resume-content mr-auto">
-                <h3 class="mb-0">Bharati Vidyapeeth's Institute of Computer Applications and Management, GGSIPU</h3>
-                <div class="subheading mb-3">Master's Degree</div>
-                <div>Computer Science</div>
-                <p>New Delhi, India</p>
-              </div>
-              <div class="resume-date text-md-right">
-                <span class="text-primary">May 2013 - May 2016</span>
-              </div>
+            <div class="card mb-5">
+                <div class="card-body">
+                    <div class="resume-item d-flex flex-column flex-md-row">
+                        <div class="resume-content mr-auto">
+                            <h3 class="mb-0">Bharati Vidyapeeth's Institute of Computer Applications and Management,
+                                GGSIPU</h3>
+                            <div class="subheading mb-3">Master's Degree</div>
+                            <div>Computer Science</div>
+                            <p>New Delhi, India</p>
+                        </div>
+                        <div class="resume-date text-md-right">
+                            <span class="text-primary">May 2013 - May 2016</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <div class="card">
-          <div class="card-body">
-            <div class="resume-item d-flex flex-column flex-md-row">
-              <div class="resume-content mr-auto">
-                <h3 class="mb-0">Institute of Information Technology and Management</h3>
-                <div class="subheading mb-3">Bachelor's Degree</div>
-                <div>Computer Science</div>
-                <p>New Delhi, India</p>
-              </div>
-              <div class="resume-date text-md-right">
-                <span class="text-primary">May 2009 - May 2013</span>
-              </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="resume-item d-flex flex-column flex-md-row">
+                        <div class="resume-content mr-auto">
+                            <h3 class="mb-0">Institute of Information Technology and Management</h3>
+                            <div class="subheading mb-3">Bachelor's Degree</div>
+                            <div>Computer Science</div>
+                            <p>New Delhi, India</p>
+                        </div>
+                        <div class="resume-date text-md-right">
+                            <span class="text-primary">May 2009 - May 2013</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+
         </div>
+    </section>
 
-      </div> </section>
+    <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="skills">
+        <div class="my-auto"><h2 class="mb-5">Skills</h2>
 
-      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="skills"> <div class="my-auto"> <h2 class="mb-5">Skills</h2>
+            <div class="subheading mb-3">Programming Languages &amp; Tools</div>
+            <ul class="list-inline list-icons">
+                <li class="list-inline-item">
+                    <i class="devicons devicons-php"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="devicons devicons-javascript"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="devicons devicons-python"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="devicons devicons-java"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="devicons devicons-wordpress"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="devicons devicons-laravel"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="devicons devicons-react"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="devicons devicon-nodejs"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="devicons devicons-git"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="devicons devicons-mysql"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="devicons devicons-docker"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="devicons devicons-aws"></i>
+                </li>
+            </ul>
 
-        <div class="subheading mb-3">Programming Languages &amp; Tools</div>
-        <ul class="list-inline list-icons">
-          <li class="list-inline-item">
-            <i class="devicons devicons-php"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="devicons devicons-javascript"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="devicons devicons-python"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="devicons devicons-java"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="devicons devicons-wordpress"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="devicons devicons-laravel"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="devicons devicons-react"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="devicons devicon-nodejs"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="devicons devicons-git"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="devicons devicons-mysql"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="devicons devicons-docker"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="devicons devicons-aws"></i>
-          </li>
-        </ul>
+            <div class="subheading mb-3">Workflow</div>
+            <ul class="fa-ul mb-0">
+                <li>
+                    <i class="fa-li fa fa-check"></i>
+                    Test-Driven Development (TDD)
+                </li>
+                <li>
+                    <i class="fa-li fa fa-check"></i>
+                    SOLID Principles &amp; Design Patterns
+                </li>
+                <li>
+                    <i class="fa-li fa fa-check"></i>
+                    Scalable and Performant Systems
+                </li>
+                <li>
+                    <i class="fa-li fa fa-check"></i>
+                    Real-Time Analytics &amp; Data Processing
+                </li>
+                <li>
+                    <i class="fa-li fa fa-check"></i>
+                    Machine Learning &amp; Deep Learning
+                </li>
+                <li>
+                    <i class="fa-li fa fa-check"></i>
+                    Recommendation Engines &amp; Graph-Based Algorithms
+                </li>
+                <li>
+                    <i class="fa-li fa fa-check"></i>
+                    Continuous Learning &amp; Skill Acquisition
+                </li>
+            </ul>
 
-        <div class="subheading mb-3">Workflow</div>
-        <ul class="fa-ul mb-0">
-          <li>
-            <i class="fa-li fa fa-check"></i>
-            Test-Driven Development (TDD)
-          </li>
-          <li>
-            <i class="fa-li fa fa-check"></i>
-            SOLID Principles &amp; Design Patterns
-          </li>
-          <li>
-            <i class="fa-li fa fa-check"></i>
-            Scalable and Performant Systems
-          </li>
-          <li>
-            <i class="fa-li fa fa-check"></i>
-            Real-Time Analytics &amp; Data Processing
-          </li>
-          <li>
-            <i class="fa-li fa fa-check"></i>
-            Machine Learning &amp; Deep Learning
-          </li>
-          <li>
-            <i class="fa-li fa fa-check"></i>
-            Recommendation Engines &amp; Graph-Based Algorithms
-          </li>
-          <li>
-            <i class="fa-li fa fa-check"></i>
-            Continuous Learning &amp; Skill Acquisition
-          </li>
-        </ul>
+        </div>
+    </section>
 
-      </div> </section>
+</div>
 
-    </div>
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Plugin JavaScript -->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for this template -->
-    <script src="js/resume.min.js"></script>
-    <script>
-      document.getElementById('knowMoreBtn').addEventListener('click', function(event) {
+<!-- Custom scripts for this template -->
+<script src="js/resume.min.js"></script>
+<script>
+    document.getElementById('knowMoreBtn').addEventListener('click', function (event) {
         event.preventDefault();
         var aboutSection = document.getElementById('about');
-        aboutSection.scrollIntoView({ behavior: 'smooth' });
-      });
-    </script>
+        aboutSection.scrollIntoView({behavior: 'smooth'});
+    });
+
+    document.getElementById('seeProjectsBtn').addEventListener('click', function (event) {
+        event.preventDefault();
+        var projectsSection = document.getElementById('projects');
+        projectsSection.scrollIntoView({behavior: 'smooth'});
+    });
+</script>
 
 
-
-  </body>
+</body>
 
 </html>

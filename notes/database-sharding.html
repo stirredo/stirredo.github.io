@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Database sharding: when and how · Abhi G</title>
+<meta name="description" content="Sharding removes cross-shard transactions, joins, and unique constraints, so it should be the last scaling step. What to exhaust first, how to pick the key, and how to leave room to reshard.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@600&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css"></head>
+<body><div class="wrap">
+<header class="top"><a class="brand" href="../index.html"><i></i>abhi-g.dev</a>
+<nav><a href="../index.html">Home</a><a href="../notes/index.html" aria-current="page">Notes</a><a href="../about.html">About</a></nav></header>
+<main>
+<div class="eyebrow"><span class="tag">Databases</span><span>Aug 2022</span><span>5 min read</span></div><h1>Database sharding: when and how</h1><p class="lede">Sharding removes cross-shard transactions, joins, and unique constraints, so it should be the last scaling step. What to exhaust first, how to pick the key, and how to leave room to reshard.</p><p class="origin">Originally written on 8 August 2022. Migrated from a WordPress blog and reformatted.</p><p>Sharding is horizontal partitioning across database instances: rows are distributed by a shard key, and each shard holds a disjoint subset. It scales writes and storage beyond a single machine. It also removes cross-shard transactions, cross-shard joins, and the ability to add an index and see it apply everywhere. It should be the last step.</p>
+<h2>Before sharding</h2>
+<p>Most databases that appear to need sharding need one of these first:</p>
+<div style="overflow-x:auto"><table><thead><tr><th>Symptom</th><th>Try first</th></tr></thead><tbody><tr><td>Read latency under load</td><td>read replicas, query optimisation, a cache</td></tr><tr><td>Table too large to index or vacuum</td><td>partitioning within one instance (PostgreSQL declarative partitioning)</td></tr><tr><td>One tenant dominates</td><td>move that tenant to its own instance</td></tr><tr><td>Writes saturate one instance</td><td>batch writes, remove unnecessary indexes, faster storage</td></tr><tr><td>Storage limit</td><td>archive cold rows to cheaper storage</td></tr></tbody></table></div>
+<p>A single well-configured PostgreSQL instance on modern hardware handles tens of thousands of writes per second and several terabytes. Sharding below that scale adds cost without benefit.</p>
+<h2>Choosing the shard key</h2>
+<p>Every query that does not include the shard key must be sent to every shard. The key is therefore chosen by the access pattern, not by the data model.</p>
+<pre><code class="lang-">  shard key: customer_id
+
+  SELECT * FROM orders WHERE customer_id = 42          -&gt; one shard
+  SELECT * FROM orders WHERE id = 9001                 -&gt; every shard
+  SELECT * FROM orders WHERE created &gt; &#x27;2022-08-01&#x27;    -&gt; every shard
+  SELECT count(*) FROM orders                          -&gt; every shard, then sum</code></pre>
+<p>Good keys have three properties:</p>
+<ul><li><strong>High cardinality</strong>, so rows spread evenly. <code>country</code> is a poor key; <code>customer_id</code> is a reasonable one.</li><li><strong>Present in most queries</strong>, so most queries are single-shard.</li><li><strong>Stable</strong>, since moving a row between shards on key change is expensive.</li></ul>
+<p>For multi-tenant systems the tenant id is almost always the answer. For consumer systems the user id usually is. Time-based keys are attractive for append-only data and disastrous for anything else, because all current writes land on one shard.</p>
+<h2>Mapping keys to shards</h2>
+<p><strong>Hash.</strong> <code>shard = hash(key) % N</code>. Even distribution, no metadata, and every key moves when N changes. Acceptable when N is fixed for a long time.</p>
+<p><strong>Range.</strong> Contiguous key ranges per shard, held in a lookup table. Supports range queries on the key and rebalancing by splitting ranges. Requires the lookup table to be consulted on every query and risks hot ranges.</p>
+<p><strong>Directory.</strong> An explicit <code>key -&gt; shard</code> mapping. Maximum flexibility, including moving one tenant at a time. The directory becomes a critical dependency and must be cached aggressively.</p>
+<p>Consistent hashing sits between hash and directory: even distribution and minimal movement on resize, at the cost of some implementation complexity.</p>
+<h2>What sharding costs</h2>
+<p><strong>Transactions</strong> span one shard. An order and its line items must share a shard key, or the write is no longer atomic. Design the schema so that every unit of work is co-located.</p>
+<p><strong>Joins</strong> across shards do not exist. Either denormalise the joined data into the row, or join in the application. Reference tables that are small and rarely change (countries, plans) are replicated to every shard.</p>
+<p><strong>Unique constraints</strong> apply per shard. A globally unique email address needs either a global lookup service or a scheme where the unique value determines the shard.</p>
+<p><strong>Schema migrations</strong> run N times, and a migration that succeeds on 9 shards and fails on the 10th leaves the system in a mixed state. Migrations must be backward compatible so that the application works during the rollout.</p>
+<p><strong>Operations</strong> multiply: backups, monitoring, failover, and capacity planning per shard.</p>
+<h2>Resharding</h2>
+<p>The number of shards will need to change. Plan for it at the start:</p>
+<ul><li>Use more logical shards than physical instances (for example 256 logical shards mapped to 4 instances). Growing to 8 instances then moves logical shards between machines without rehashing any key.</li><li>Write the shard mapping to a table or config that can be changed without a deploy.</li><li>Support dual-writing during a move: writes go to both old and new locations until the copy is verified, then reads switch.</li></ul>
+<h2>Summary</h2>
+<p>Shard when a single instance is at its limit after replicas, partitioning, caching, and tenant isolation have been exhausted. Pick the key from the query pattern. Co-locate everything a transaction touches. Over-provision logical shards from day one so that resharding is a data move rather than a rehash.</p><div class="next">Next note → <a href="node-js-event-loop.html">The Node.js event loop and CPU-bound work</a></div>
+</main>
+<footer><span>Abhi G</span></footer>
+</div></body></html>

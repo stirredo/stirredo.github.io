@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Node.js event loop and CPU-bound work · Abhi G</title>
+<meta name="description" content="Node serves thousands of connections on one thread because nothing blocks. A 200 ms synchronous call in a handler delays every connection by 200 ms. How to measure it and where to move the work.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@600&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css"></head>
+<body><div class="wrap">
+<header class="top"><a class="brand" href="../index.html"><i></i>abhi-g.dev</a>
+<nav><a href="../index.html">Home</a><a href="../notes/index.html" aria-current="page">Notes</a><a href="../about.html">About</a></nav></header>
+<main>
+<div class="eyebrow"><span class="tag">Node.js</span><span>Feb 2022</span><span>5 min read</span></div><h1>The Node.js event loop and CPU-bound work</h1><p class="lede">Node serves thousands of connections on one thread because nothing blocks. A 200 ms synchronous call in a handler delays every connection by 200 ms. How to measure it and where to move the work.</p><p class="origin">Originally written on 14 February 2022. Migrated from a WordPress blog and reformatted.</p><p>Node.js runs JavaScript on a single thread. It achieves high concurrency not by running code in parallel but by never waiting: every I/O operation is handed to the operating system or a thread pool, and the JavaScript thread moves on. When the operation completes, its callback is queued, and the event loop runs it when the stack is empty.</p>
+<figure class="fig"><img src="../img/js-event-loop.png" alt="The call stack, the callback queue, and the event loop that moves work between them." loading="lazy"><figcaption>The call stack, the callback queue, and the event loop that moves work between them.<br><span class="credit">Figure by Byteslovesbits, <a href="https://commons.wikimedia.org/wiki/File:JavaScript_Event_Loop.png">Wikimedia Commons</a>, CC BY-SA 4.0.</span></figcaption></figure>
+<h2>The loop</h2>
+<p>Simplified, each iteration of the loop:</p>
+<ol><li>Runs timers whose time has come (<code>setTimeout</code>, <code>setInterval</code>).</li><li>Runs I/O callbacks for completed operations (file reads, socket data, DNS).</li><li>Polls for new I/O events, blocking briefly if nothing is pending.</li><li>Runs <code>setImmediate</code> callbacks.</li><li>Runs close callbacks.</li></ol>
+<p>Between every callback, the microtask queue is drained: resolved promises and <code>process.nextTick</code> callbacks run before the loop advances. This is why an <code>await</code> on an already-resolved promise still yields to other microtasks but not to I/O.</p>
+<p>The consequence that matters operationally: <strong>a callback that runs for 200 ms delays every other callback by 200 ms.</strong> Every open HTTP connection, every timer, every completed database query waits until the running callback returns.</p>
+<h2>Recognising the problem</h2>
+<p>An HTTP service whose p99 latency rises under load while CPU sits at 100 percent on a single core, and whose average latency is fine, is usually blocking the loop. The <code>--cpu-prof</code> flag or the <code>perf_hooks</code> monitor confirms it:</p>
+<pre><code class="lang-js">const { monitorEventLoopDelay } = require(&#x27;perf_hooks&#x27;);
+const h = monitorEventLoopDelay({ resolution: 20 });
+h.enable();
+setInterval(() =&gt; console.log(&#x27;loop delay p99 ms&#x27;, h.percentile(99) / 1e6), 5000);</code></pre>
+<p>A p99 loop delay above a few milliseconds under load means callbacks are running too long.</p>
+<h2>Common causes</h2>
+<ul><li>Synchronous file system calls: <code>fs.readFileSync</code>, <code>fs.existsSync</code> in a request handler.</li><li>JSON parsing or serialisation of large payloads. <code>JSON.parse</code> on 50 MB blocks for hundreds of milliseconds.</li><li>Regular expressions with catastrophic backtracking on user input.</li><li>Cryptography: <code>crypto.pbkdf2Sync</code>, <code>bcrypt.hashSync</code>. The async versions run on the thread pool.</li><li>Image processing, compression, or any loop over a large array in a handler.</li><li><code>console.log</code> to a slow pipe, which is synchronous for files and pipes.</li></ul>
+<h2>Moving CPU-bound work off the loop</h2>
+<p><strong>Worker threads.</strong> Since Node 12, <code>worker_threads</code> runs JavaScript on separate threads with their own event loops, communicating by message passing.</p>
+<pre><code class="lang-js">// main.js
+const { Worker } = require(&#x27;worker_threads&#x27;);
+
+function hashPassword(password) {
+  return new Promise((resolve, reject) =&gt; {
+    const w = new Worker(&#x27;./hash-worker.js&#x27;, { workerData: password });
+    w.once(&#x27;message&#x27;, resolve);
+    w.once(&#x27;error&#x27;, reject);
+  });
+}
+
+// hash-worker.js
+const { parentPort, workerData } = require(&#x27;worker_threads&#x27;);
+const bcrypt = require(&#x27;bcrypt&#x27;);
+parentPort.postMessage(bcrypt.hashSync(workerData, 12));</code></pre>
+<p>Spawning a worker per request costs tens of milliseconds; use a pool (<code>piscina</code> is the usual choice) for anything called frequently.</p>
+<p><strong>The libuv thread pool.</strong> Node's built-in async functions for file I/O, DNS, and crypto already run on a pool of four threads. <code>UV_THREADPOOL_SIZE</code> raises the count. This helps when the bottleneck is those specific operations, and does nothing for user code.</p>
+<p><strong>Chunking.</strong> For a long loop over data that must stay on the main thread, yield between chunks with <code>setImmediate</code> so I/O callbacks can run. This does not reduce total CPU time; it interleaves it with other work.</p>
+<p><strong>A separate service.</strong> CPU-heavy work that dominates the application belongs in a process designed for it, in whatever language is appropriate, behind a queue.</p>
+<h2>Summary</h2>
+<p>Node's concurrency model is efficient precisely because the main thread never waits. Any synchronous work of more than a few milliseconds in a handler undermines it for every concurrent client. Measure loop delay, find the blocking calls, and move them to workers or out of the process.</p><div class="next">Next note → <a href="consistent-hashing.html">Consistent hashing, explained with a small example</a></div>
+</main>
+<footer><span>Abhi G</span></footer>
+</div></body></html>

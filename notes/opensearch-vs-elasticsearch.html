@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OpenSearch vs Elasticsearch · Abhi G</title>
+<meta name="description" content="Forked from the same code in 2021, the two now differ on licence, vector search, query language, and managed-service cost. A decision rule for new deployments and for teams already on one.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@600&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css"></head>
+<body><div class="wrap">
+<header class="top"><a class="brand" href="../index.html"><i></i>abhi-g.dev</a>
+<nav><a href="../index.html">Home</a><a href="../notes/index.html" aria-current="page">Notes</a><a href="../about.html">About</a></nav></header>
+<main>
+<div class="eyebrow"><span class="tag">Search</span><span>Oct 2024</span><span>5 min read</span></div><h1>OpenSearch vs Elasticsearch</h1><p class="lede">Forked from the same code in 2021, the two now differ on licence, vector search, query language, and managed-service cost. A decision rule for new deployments and for teams already on one.</p><p>OpenSearch was forked from Elasticsearch 7.10.2 in 2021 after Elastic changed its licence from Apache 2.0 to SSPL and the Elastic License. Three years on, both are actively developed, both are used at scale, and the choice between them is no longer just about the licence.</p>
+<h2>Licence</h2>
+<div style="overflow-x:auto"><table><thead><tr><th></th><th>Elasticsearch</th><th>OpenSearch</th></tr></thead><tbody><tr><td>Licence</td><td>SSPL or Elastic License 2.0; AGPL 3.0 announced August 2024, shipping in 8.16</td><td>Apache 2.0</td></tr><tr><td>Offer as a managed service</td><td>permitted under AGPL with source obligations; restricted under the others</td><td>permitted</td></tr><tr><td>Governance</td><td>Elastic N.V.</td><td>Linux Foundation (OpenSearch Software Foundation, since 2024)</td></tr></tbody></table></div>
+<p>Elastic announced AGPL as an option in August 2024, which addresses the "not open source" objection for most users. For a company that wants to embed search in a product it sells as a service, Apache 2.0 remains simpler to reason about.</p>
+<h2>Features</h2>
+<p>Both cover the core: inverted index, aggregations, index lifecycle management, snapshot and restore, security, alerting, and dashboards (Kibana and OpenSearch Dashboards respectively). Differences that matter in practice:</p>
+<p><strong>Vector search.</strong> Both support k-NN. Elasticsearch's implementation is built into Lucene's HNSW with <code>dense_vector</code>; OpenSearch's k-NN plugin supports Lucene, FAISS, and NMSLIB engines, with more tuning options and the ability to use approximate search on larger indexes. OpenSearch also ships a neural search plugin that runs embedding models in-cluster.</p>
+<p><strong>Query language.</strong> Elasticsearch has ES|QL, a piped query language introduced in 8.11. OpenSearch has PPL (piped processing language) and SQL through a plugin. The two are not compatible.</p>
+<p><strong>Machine learning.</strong> Elasticsearch ML (anomaly detection, inference) is a paid feature. OpenSearch's anomaly detection and ML Commons are Apache-licensed.</p>
+<p><strong>Search relevance.</strong> Elasticsearch has more mature semantic and learned-sparse retrieval (ELSER) in the commercial tier. OpenSearch's equivalents are newer.</p>
+<p><strong>Performance.</strong> Benchmarks from each vendor favour that vendor. Independent measurements show Elasticsearch ahead on some indexing and aggregation workloads by tens of percent, with the gap varying by version and workload. For most deployments the difference is smaller than the difference between a well-tuned and a badly-tuned cluster of either.</p>
+<h2>Operations</h2>
+<p><strong>Managed services.</strong> Elastic Cloud runs on AWS, Azure, and GCP. Amazon OpenSearch Service is the AWS-native option and integrates with IAM, CloudWatch, and VPC directly. Other providers (Aiven, Instaclustr) offer OpenSearch.</p>
+<p><strong>Clients.</strong> Elasticsearch clients after 7.10 include a product check that refuses to connect to OpenSearch. OpenSearch maintains its own client libraries. A codebase on Elasticsearch 7.x clients works against either; moving to 8.x clients locks in Elasticsearch.</p>
+<p><strong>Upgrade path.</strong> Elasticsearch 7.10 to OpenSearch is a supported in-place upgrade. OpenSearch to Elasticsearch is a reindex.</p>
+<h2>Cost</h2>
+<p>Self-hosted, the software cost is zero for both; the difference is in paid features. Elasticsearch gates ML, some security features, and cross-cluster replication behind a subscription. OpenSearch includes equivalents at no cost. Managed, Amazon OpenSearch Service is typically priced below Elastic Cloud for comparable instances, but Elastic Cloud's serverless tier changes the comparison for bursty workloads.</p>
+<h2>Decision</h2>
+<p><strong>New deployment on AWS, standard search and logging:</strong> OpenSearch. Native integration, Apache 2.0, no feature gating, and the cost advantage on the managed service.</p>
+<p><strong>New deployment needing Elastic's commercial ML or relevance features, or already on Elastic Cloud:</strong> Elasticsearch. The commercial features are ahead and the AGPL option resolves most licence concerns.</p>
+<p><strong>Existing Elasticsearch 7.x:</strong> either is reachable. Decide by the two points above before upgrading past 7.10, because after that the clients diverge.</p>
+<p><strong>Existing OpenSearch:</strong> stay, unless a specific Elasticsearch-only feature is required. The migration cost is a full reindex and client rewrite.</p>
+<p>The projects are more alike than the marketing on either side suggests. The decision is mostly about where the cluster will run and whether any gated feature is needed.</p><div class="next">Next note → <a href="database-sharding.html">Database sharding: when and how</a></div>
+</main>
+<footer><span>Abhi G</span></footer>
+</div></body></html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mockito verify: what it proves and what it doesn&#x27;t · Abhi G</title>
+<meta name="description" content="verify() is the right assertion for collaborators whose only observable behaviour is the call: senders, publishers, gateways. For anything that returns a value, assert on the result instead.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@600&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css"></head>
+<body><div class="wrap">
+<header class="top"><a class="brand" href="../index.html"><i></i>abhi-g.dev</a>
+<nav><a href="../index.html">Home</a><a href="../notes/index.html" aria-current="page">Notes</a><a href="../about.html">About</a></nav></header>
+<main>
+<div class="eyebrow"><span class="tag">Java</span><span>Aug 2017</span><span>4 min read</span></div><h1>Mockito verify: what it proves and what it doesn't</h1><p class="lede">verify() is the right assertion for collaborators whose only observable behaviour is the call: senders, publishers, gateways. For anything that returns a value, assert on the result instead.</p><p class="origin">Originally written on 21 August 2017. Migrated from a WordPress blog and reformatted.</p><p><code>verify()</code> is the most used and most misused method in Mockito. It asserts that a mock received a call. Used on the right collaborator, it is the only way to test certain behaviour. Used on the wrong one, it produces tests that pass while the code is broken and fail while the code is fine.</p>
+<h2>What verify asserts</h2>
+<pre><code class="lang-java">verify(mailer).send(eq(&quot;customer@example.com&quot;), any(Message.class));
+verify(mailer, times(1)).send(any(), any());
+verify(mailer, never()).send(eq(&quot;internal@example.com&quot;), any());
+verifyNoMoreInteractions(mailer);</code></pre>
+<p>Each of these is a statement about the interaction between the class under test and the mock: that a call happened, how many times, with what arguments, and that nothing else happened. Nothing is asserted about the outcome of the call, because a mock has no outcome.</p>
+<pre><code class="lang-">  class under test  ──── calls ────▶  mock
+        │                              │
+        │ state / return value         │ recorded invocations
+        ▼                              ▼
+   assertThat(...)                 verify(...)</code></pre>
+<h2>When it is the right assertion</h2>
+<p>The collaborator's side effect is the behaviour. Sending an email, publishing an event, calling a payment gateway, writing an audit entry. These have no return value that matters and no state you can inspect afterwards. The only observable fact is that the call was made with the right arguments, and <code>verify</code> is how you observe it.</p>
+<pre><code class="lang-java">@Test
+public void notifiesCustomerWhenOrderShips() {
+    service.markShipped(orderId);
+
+    verify(mailer).send(eq(&quot;customer@example.com&quot;),
+        argThat(m -&gt; m.subject().contains(&quot;shipped&quot;)));
+}</code></pre>
+<p>The negative case is equally important and only <code>verify</code> can express it:</p>
+<pre><code class="lang-java">@Test
+public void doesNotNotifyWhenAlreadyShipped() {
+    service.markShipped(alreadyShippedId);
+
+    verify(mailer, never()).send(any(), any());
+}</code></pre>
+<h2>When it is the wrong assertion</h2>
+<p>The collaborator returns something the class under test uses. A repository, a pricing service, a validator. Here the outcome is observable: a return value, a thrown exception, or state in a real store. Asserting on the call instead of the outcome means the test cannot detect a wrong result.</p>
+<pre><code class="lang-java">// weak: proves the call, not the price
+verify(pricing).priceFor(&quot;SKU-1&quot;);
+
+// strong: proves the result
+assertThat(order.getTotal()).isEqualByComparingTo(&quot;19.98&quot;);</code></pre>
+<p>A test that verifies <code>repository.save(any())</code> passes when the saved order has the wrong total, the wrong status, or a null customer. A test that loads the order back and checks its fields does not.</p>
+<h2>verifyNoMoreInteractions</h2>
+<p>This asserts that the mock received no calls other than the ones already verified. It is occasionally right, for a collaborator whose every call has a cost, such as a rate-limited API. As a default it is harmful: it fails the test on any refactor that adds a harmless call, and the failure says nothing about behaviour.</p>
+<h2>Argument captors</h2>
+<p>When the argument itself needs inspection, capture it rather than matching it:</p>
+<pre><code class="lang-java">ArgumentCaptor&lt;Message&gt; captor = ArgumentCaptor.forClass(Message.class);
+verify(mailer).send(any(), captor.capture());
+Message sent = captor.getValue();
+assertThat(sent.body()).contains(orderId.toString());
+assertThat(sent.recipients()).hasSize(1);</code></pre>
+<p>This turns a <code>verify</code> into an outcome assertion on the message, which is usually what was wanted.</p>
+<h2>Summary</h2>
+<p>Use <code>verify</code> for collaborators whose only observable behaviour is the call: senders, publishers, gateways. For everything else, assert on the result. If a test contains only <code>verify</code> calls, it is describing the implementation, and it will need rewriting the next time the implementation changes.</p><div class="next">Next note → <a href="unit-test-vs-integration-test.html">Unit test vs integration test: where the line actually is</a></div>
+</main>
+<footer><span>Abhi G</span></footer>
+</div></body></html>

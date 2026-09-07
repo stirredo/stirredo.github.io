@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cache invalidation: the three strategies that actually ship · Abhi G</title>
+<meta name="description" content="Every cache has to answer one question: when does a stored value stop being trusted? There are three practical answers, and most systems end up combining two of them.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@600&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css"></head>
+<body><div class="wrap">
+<header class="top"><a class="brand" href="../index.html"><i></i>abhi-g.dev</a>
+<nav><a href="../index.html">Home</a><a href="../notes/index.html" aria-current="page">Notes</a><a href="../about.html">About</a></nav></header>
+<main>
+<div class="eyebrow"><span class="tag">Distributed systems</span><span>Nov 2018</span><span>5 min read</span></div><h1>Cache invalidation: the three strategies that actually ship</h1><p class="lede">Every cache has to answer one question: when does a stored value stop being trusted? There are three practical answers, and most systems end up combining two of them.</p><p class="origin">Originally written on 19 November 2018. Migrated from a WordPress blog and reformatted.</p><p>A cache stores a copy of a value so that reads are cheaper. The copy is correct until the source changes. Invalidation is the mechanism by which the cache learns that it has, and the choice of mechanism determines how stale a value can be and how much complexity the write path carries.</p>
+<p>There are three strategies in real use.</p>
+<figure class="fig"><svg class="dia s-sketch" viewBox="0 0 760 300" role="img" aria-label="Three ways a cache learns that a value changed" xmlns="http://www.w3.org/2000/svg"><title>Three ways a cache learns that a value changed</title><defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" class="mk"/></marker><marker id="arrhot" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" class="mk hot"/></marker><marker id="arrdead" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" class="mk dead"/></marker><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter></defs><rect class="n" x="20" y="40" width="200" height="60" rx="3"/><text class="t" x="120.0" y="63.0" text-anchor="middle" dominant-baseline="middle"><tspan x="120.0" dy="0">1. expiry</tspan><tspan x="120.0" dy="14">(TTL)</tspan></text><text class="l" x="240" y="60"><tspan x="240" dy="0">nothing to do on write</tspan></text><text class="l" x="240" y="80"><tspan x="240" dy="0">stale for up to TTL</tspan></text><rect class="n" x="20" y="120" width="200" height="60" rx="3"/><text class="t" x="120.0" y="150.0" text-anchor="middle" dominant-baseline="middle"><tspan x="120.0" dy="0">2. delete on write</tspan></text><text class="l" x="240" y="140"><tspan x="240" dy="0">writer must know every key</tspan></text><text class="l hotl" x="240" y="160"><tspan x="240" dy="0">delete AFTER commit</tspan></text><rect class="n" x="20" y="200" width="200" height="60" rx="3"/><text class="t" x="120.0" y="230.0" text-anchor="middle" dominant-baseline="middle"><tspan x="120.0" dy="0">3. versioned keys</tspan></text><text class="l" x="240" y="220"><tspan x="240" dy="0">bump one number, old keys age out</tspan></text><text class="l" x="240" y="240"><tspan x="240" dy="0">product:42:v17  -&gt;  v18</tspan></text><text class="gl" x="20" y="285"><tspan x="20" dy="0">most systems: 1 as the floor, plus 2 or 3 for freshness</tspan></text></svg><figcaption>Three ways a cache learns that a value changed</figcaption></figure>
+<h2>1. Expiry (TTL)</h2>
+<p>Every entry carries a lifetime. Reads within the lifetime return the cached value; after it, the next read misses and repopulates.</p>
+<pre><code class="lang-">SET product:42 {...} EX 300</code></pre>
+<p><strong>Bound on staleness:</strong> the TTL. A product price changed at 12:00:01 can be served at the old value until 12:05:00.</p>
+<p><strong>Write path complexity:</strong> none. The writer does not know the cache exists.</p>
+<p><strong>Where it fits:</strong> anything where a bounded delay is acceptable and the write path cannot be modified: third-party data, derived aggregates, most read-heavy pages. It is the correct default because it is the only strategy that cannot be broken by a write path that forgets to invalidate.</p>
+<p><strong>Failure mode:</strong> the thundering herd. When a popular key expires, every concurrent reader misses at once and all of them hit the source. Mitigate with a short lock around repopulation, or by having one reader refresh in the background slightly before expiry while others continue to serve the old value.</p>
+<h2>2. Explicit invalidation on write</h2>
+<p>The writer, after updating the source, deletes or overwrites the cache entry.</p>
+<pre><code class="lang-php">DB::transaction(function () use ($product) {
+    $product-&gt;save();
+});
+Cache::forget(&quot;product:{$product-&gt;id}&quot;);</code></pre>
+<p><strong>Bound on staleness:</strong> the gap between commit and <code>forget</code>, typically milliseconds.</p>
+<p><strong>Write path complexity:</strong> every write path must know every cache key that depends on the value. A product's price may be cached under <code>product:42</code>, <code>category:7:listing</code>, and <code>search:...</code> keys. Missing one produces a permanently stale entry, which is why this strategy is usually combined with a TTL as a backstop.</p>
+<p><strong>Ordering matters.</strong> Delete after commit, not before. If the delete precedes the commit, a concurrent reader can miss, read the old value from the database, and repopulate the cache with it after the write has committed.</p>
+<p><strong>Delete, don't update.</strong> Writing the new value into the cache from the write path seems efficient but races with concurrent reads that may write an older value afterward. Deleting and letting the next read repopulate is safe.</p>
+<h2>3. Versioned keys</h2>
+<p>Instead of invalidating, change the key. The cache key includes a version that the source increments on write:</p>
+<pre><code class="lang-">version = GET product:42:version        # 17
+GET product:42:v17</code></pre>
+<p>On update, the writer increments the version. Old entries are never touched; they simply stop being read and expire on their own TTL.</p>
+<p><strong>Bound on staleness:</strong> the read of the version number, which can itself be cached briefly.</p>
+<p><strong>Write path complexity:</strong> one increment per logical entity, regardless of how many derived keys exist. A category listing can carry its own version, incremented whenever any product in the category is written, so one increment invalidates every derived key for that category.</p>
+<p><strong>Where it fits:</strong> entities with many derived cache entries, and anything where a namespace-wide invalidation ("everything for tenant X") is needed. Bumping one version number is cheaper and safer than enumerating keys.</p>
+<h2>Combining them</h2>
+<p>Most production systems use expiry as the floor and one of the other two for freshness:</p>
+<ul><li>TTL on every key, always, so nothing is stale forever.</li><li>Explicit delete after commit for entities with a small, known set of keys.</li><li>Versioned keys for entities with many dependents or where bulk invalidation is needed.</li></ul>
+<p>The strategy that is not on the list is "the cache is always right". Design for the case where invalidation is missed, because it will be.</p><div class="next">Next note → <a href="redlock-redis-lock.html">Redlock and Redis locks: why the TTL is the whole problem</a></div>
+</main>
+<footer><span>Abhi G</span></footer>
+</div></body></html>

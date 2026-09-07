@@ -1,4 +1,3 @@
-My portfolio/resume website at [abhi-gulyani.dev](https://abhi-gulyani.dev)
+# abhi-g.dev
 
-
-Theme - [https://themewagon.com/themes/free-bootstrap-4-cv-template-download/](https://themewagon.com/themes/free-bootstrap-4-cv-template-download/)
+Static site for abhi-g.dev, published with GitHub Pages. Generated from the sources in a separate working folder; edit there and re-copy rather than editing these files directly.

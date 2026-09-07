@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Consistent hashing, explained with a small example · Abhi G</title>
+<meta name="description" content="With hash-mod-N, adding one server moves almost every key. Consistent hashing moves only 1/N of them. Worked through with four servers, six keys, and the two refinements every implementation adds.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+Condensed:wght@600&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css"></head>
+<body><div class="wrap">
+<header class="top"><a class="brand" href="../index.html"><i></i>abhi-g.dev</a>
+<nav><a href="../index.html">Home</a><a href="../notes/index.html" aria-current="page">Notes</a><a href="../about.html">About</a></nav></header>
+<main>
+<div class="eyebrow"><span class="tag">Distributed systems</span><span>Sep 2020</span><span>5 min read</span></div><h1>Consistent hashing, explained with a small example</h1><p class="lede">With hash-mod-N, adding one server moves almost every key. Consistent hashing moves only 1/N of them. Worked through with four servers, six keys, and the two refinements every implementation adds.</p><p class="origin">Originally written on 21 September 2020. Migrated from a WordPress blog and reformatted.</p><h2>The problem with modulo</h2>
+<p>The obvious way to spread keys across N servers is <code>server = hash(key) % N</code>. It is even, fast, and stateless. Its defect appears the first time N changes.</p>
+<p>With 4 servers, key <code>user:1001</code> hashes to, say, 7,213, and <code>7213 % 4 = 1</code>: server 1. Add a fifth server and <code>7213 % 5 = 3</code>: server 3. The key has moved, and so has almost every other key, because changing the modulus changes the result for all but a fraction 1/N of inputs. In a cache, that means a near-total miss storm on every scale event. In a partitioned store, it means rehoming most of the data.</p>
+<h2>The ring</h2>
+<p>Consistent hashing hashes both keys and servers into the same space, conventionally visualised as a ring from 0 to 2^32 - 1. Each key is assigned to the first server found moving clockwise from the key's position.</p>
+<figure class="fig"><img src="../img/consistent-hashing.png" alt="Keys and nodes placed on the same hash ring; each key is served by the next node clockwise." loading="lazy"><figcaption>Keys and nodes placed on the same hash ring; each key is served by the next node clockwise.<br><span class="credit">Figure by WikiLinuz, <a href="https://commons.wikimedia.org/wiki/File:Consistent_Hashing_Sample_Illustration.png">Wikimedia Commons</a>, CC BY-SA 4.0.</span></figcaption></figure>
+<p>Adding a server places one new point on the ring. The only keys that move are those between the new server and its counter-clockwise neighbour, which were previously served by the next server clockwise. Every other key is untouched. Removing a server has the symmetric effect: its keys move to the next server clockwise, and nothing else changes.</p>
+<p>On average, adding or removing one server out of N moves 1/N of the keys, which is the theoretical minimum.</p>
+<h2>A worked example</h2>
+<p>Ring size 100 for readability. Servers hash to A=10, B=35, C=60, D=85.</p>
+<div style="overflow-x:auto"><table><thead><tr><th>Key</th><th>hash</th><th>Served by</th></tr></thead><tbody><tr><td>k1</td><td>4</td><td>A (10)</td></tr><tr><td>k2</td><td>22</td><td>B (35)</td></tr><tr><td>k3</td><td>40</td><td>C (60)</td></tr><tr><td>k4</td><td>58</td><td>C (60)</td></tr><tr><td>k5</td><td>71</td><td>D (85)</td></tr><tr><td>k6</td><td>93</td><td>A (10), wrapping around</td></tr></tbody></table></div>
+<p>Add server E at 50. Only keys in (35, 50] move: k3 (40) moves from C to E. k4 (58) stays on C. Everything else is unchanged. One key out of six.</p>
+<p>Remove server B. Keys in (10, 35] move to the next server clockwise: k2 moves to C (or E, if E was added). Again one key.</p>
+<h2>Virtual nodes</h2>
+<p>With a handful of servers, the arcs between them are uneven. In the example, A owns (85, 10], a span of 25, while B owns (10, 35], also 25, but with random hashes the spans could easily be 5 and 45. One server would take nine times the load of another.</p>
+<p>The fix is to place each physical server at many points on the ring, say 100 to 200 virtual nodes each, with <code>hash(server + "#" + i)</code>. The arcs then average out, and a removed server's load is spread across all remaining servers rather than dumped on one neighbour. Every production implementation does this.</p>
+<h2>Bounded load</h2>
+<p>Even with virtual nodes, a single hot key still lands on one server. Consistent hashing with bounded loads adds a rule: if the target server is above a load threshold (for example 1.25 times the average), move clockwise to the next one. Keys are still sticky under normal conditions and spill over only under skew. This is what Google's load balancers and several CDNs use.</p>
+<h2>Implementation sketch</h2>
+<pre><code class="lang-python">import bisect, hashlib
+
+class Ring:
+    def __init__(self, nodes, replicas=150):
+        self._keys, self._map = [], {}
+        for n in nodes:
+            for i in range(replicas):
+                h = self._hash(f&quot;{n}#{i}&quot;)
+                bisect.insort(self._keys, h)
+                self._map[h] = n
+
+    def _hash(self, s):
+        return int(hashlib.md5(s.encode()).hexdigest(), 16) % (2**32)
+
+    def node_for(self, key):
+        h = self._hash(key)
+        i = bisect.bisect(self._keys, h)
+        return self._map[self._keys[i % len(self._keys)]]</code></pre>
+<p>A sorted list of virtual node positions and a binary search per lookup. Adding or removing a physical node inserts or removes its <code>replicas</code> positions.</p>
+<h2>Where it is used</h2>
+<p>Distributed caches (memcached clients, Redis Cluster's slot mapping is a close relative), partitioned databases (Cassandra, DynamoDB), load balancers with session affinity, and CDNs. Anywhere keys need a stable home that survives the set of homes changing.</p><div class="next">Next note → <a href="backpressure-in-software.html">Backpressure in software: what it is and how to apply it</a></div>
+</main>
+<footer><span>Abhi G</span></footer>
+</div></body></html>

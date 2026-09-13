@@ -35,7 +35,7 @@ appendfsync everysec</code></pre>
 <h2>When to use something else</h2>
 <p>Redis is a reasonable queue for background jobs that are cheap to lose or easy to replay. It is not a durable log: there is no consumer offset, no replay from an earlier point, and no ordering guarantee across multiple lists. When any of those are requirements, the answer is Kafka or a managed queue with acknowledgements, not a more careful Redis configuration.</p>
 <h2>Checklist</h2>
-<ul><li><code>BRPOPLPUSH</code> with a processing list and a reaper, not bare <code>BRPOP</code></li><li><code>appendonly yes</code>, <code>appendfsync everysec</code></li><li><code>volatile-lru</code> on shared instances, <code>noeviction</code> on dedicated ones, no TTL on queue keys</li><li>For jobs that cannot be regenerated, an intent record outside Redis</li></ul><div class="next">Next note → <a href="mockito-verify.html">Mockito verify: what it proves and what it doesn't</a></div>
+<ul><li><code>BRPOPLPUSH</code> with a processing list and a reaper, not bare <code>BRPOP</code></li><li><code>appendonly yes</code>, <code>appendfsync everysec</code></li><li><code>volatile-lru</code> on shared instances, <code>noeviction</code> on dedicated ones, no TTL on queue keys</li><li>For jobs that cannot be regenerated, an intent record outside Redis</li></ul><div class="next">Next note → <a href="unit-test-vs-integration-test.html">Unit test vs integration test: where the line actually is</a></div>
 </main>
 <footer><span>Abhi G</span></footer>
 </div></body></html>

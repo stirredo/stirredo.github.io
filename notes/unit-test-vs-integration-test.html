@@ -8,7 +8,7 @@
 <header class="top"><a class="brand" href="../index.html"><i></i>abhi-g.dev</a>
 <nav><a href="../index.html">Home</a><a href="../notes/index.html" aria-current="page">Notes</a><a href="../about.html">About</a></nav></header>
 <main>
-<div class="eyebrow"><span class="tag">Java</span><span>Mar 2017</span><span>5 min read</span></div><h1>Unit test vs integration test: where the line actually is</h1><p class="lede">A unit test catches a defect inside one class; an integration test catches a defect in how classes and infrastructure connect. Test at the level where the bug would be introduced, with a Spring example of each.</p><p class="origin">Originally written on 6 March 2017. Migrated from a WordPress blog and reformatted.</p><p>The standard definitions are simple. A unit test exercises one class in isolation. An integration test exercises several components together, often including infrastructure. The difficulty is not the definition but the decision: for a given piece of code, which one is worth writing.</p>
+<div class="eyebrow"><span class="tag">Java</span><span>Jan 2017</span><span>5 min read</span></div><h1>Unit test vs integration test: where the line actually is</h1><p class="lede">A unit test catches a defect inside one class; an integration test catches a defect in how classes and infrastructure connect. Test at the level where the bug would be introduced, with a Spring example of each.</p><p class="origin">Originally written on 16 January 2017. Migrated from a WordPress blog and reformatted.</p><p>The standard definitions are simple. A unit test exercises one class in isolation. An integration test exercises several components together, often including infrastructure. The difficulty is not the definition but the decision: for a given piece of code, which one is worth writing.</p>
 <h2>One rule</h2>
 <p>Test at the level where the defect would be introduced.</p>
 <p>Logic that lives entirely inside one class, such as a discount calculation, a parser, or a state machine, is broken by a change to that class. A unit test catches it, runs in milliseconds, and points directly at the fault.</p>
@@ -64,7 +64,7 @@ public class OrderRepositoryTest {
 <p><strong>Integration-testing the logic.</strong> Spinning up the Spring context to test that a discount is 5 percent is slow and, when it fails, tells you less than the unit test would. Put the logic in a class that can be tested alone.</p>
 <p><strong>Treating the pyramid as a quota.</strong> The usual advice is many unit tests and fewer integration tests. That is a description of a typical codebase, not a target. A codebase that is mostly wiring around a database should have mostly integration tests.</p>
 <h2>Summary</h2>
-<p>Ask where the bug would come from. If from inside one class, write a unit test. If from the way classes and infrastructure connect, write an integration test. Each test should be at the lowest level that can actually fail for the defect it guards against.</p><div class="next">Next note → <a href="vllm-vs-sglang.html">vLLM vs SGLang</a></div>
+<p>Ask where the bug would come from. If from inside one class, write a unit test. If from the way classes and infrastructure connect, write an integration test. Each test should be at the lowest level that can actually fail for the defect it guards against.</p><div class="next">Next note → <a href="mockito-verify.html">Mockito verify: what it proves and what it doesn't</a></div>
 </main>
 <footer><span>Abhi G</span></footer>
 </div></body></html>

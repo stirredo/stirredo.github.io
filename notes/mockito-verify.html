@@ -8,7 +8,7 @@
 <header class="top"><a class="brand" href="../index.html"><i></i>abhi-g.dev</a>
 <nav><a href="../index.html">Home</a><a href="../notes/index.html" aria-current="page">Notes</a><a href="../about.html">About</a></nav></header>
 <main>
-<div class="eyebrow"><span class="tag">Java</span><span>Aug 2017</span><span>4 min read</span></div><h1>Mockito verify: what it proves and what it doesn't</h1><p class="lede">verify() is the right assertion for collaborators whose only observable behaviour is the call: senders, publishers, gateways. For anything that returns a value, assert on the result instead.</p><p class="origin">Originally written on 21 August 2017. Migrated from a WordPress blog and reformatted.</p><p><code>verify()</code> is the most used and most misused method in Mockito. It asserts that a mock received a call. Used on the right collaborator, it is the only way to test certain behaviour. Used on the wrong one, it produces tests that pass while the code is broken and fail while the code is fine.</p>
+<div class="eyebrow"><span class="tag">Java</span><span>Nov 2016</span><span>4 min read</span></div><h1>Mockito verify: what it proves and what it doesn't</h1><p class="lede">verify() is the right assertion for collaborators whose only observable behaviour is the call: senders, publishers, gateways. For anything that returns a value, assert on the result instead.</p><p class="origin">Originally written on 21 November 2016. Migrated from a WordPress blog and reformatted.</p><p><code>verify()</code> is the most used and most misused method in Mockito. It asserts that a mock received a call. Used on the right collaborator, it is the only way to test certain behaviour. Used on the wrong one, it produces tests that pass while the code is broken and fail while the code is fine.</p>
 <h2>What verify asserts</h2>
 <pre><code class="lang-java">verify(mailer).send(eq(&quot;customer@example.com&quot;), any(Message.class));
 verify(mailer, times(1)).send(any(), any());
@@ -55,7 +55,7 @@ assertThat(sent.body()).contains(orderId.toString());
 assertThat(sent.recipients()).hasSize(1);</code></pre>
 <p>This turns a <code>verify</code> into an outcome assertion on the message, which is usually what was wanted.</p>
 <h2>Summary</h2>
-<p>Use <code>verify</code> for collaborators whose only observable behaviour is the call: senders, publishers, gateways. For everything else, assert on the result. If a test contains only <code>verify</code> calls, it is describing the implementation, and it will need rewriting the next time the implementation changes.</p><div class="next">Next note → <a href="unit-test-vs-integration-test.html">Unit test vs integration test: where the line actually is</a></div>
+<p>Use <code>verify</code> for collaborators whose only observable behaviour is the call: senders, publishers, gateways. For everything else, assert on the result. If a test contains only <code>verify</code> calls, it is describing the implementation, and it will need rewriting the next time the implementation changes.</p><div class="next">Next note → <a href="vllm-vs-sglang.html">vLLM vs SGLang</a></div>
 </main>
 <footer><span>Abhi G</span></footer>
 </div></body></html>
